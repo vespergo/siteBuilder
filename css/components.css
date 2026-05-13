@@ -1,0 +1,279 @@
+.comp-heading {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.comp-paragraph {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+.comp-button {
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 500;
+  border: none;
+  transition: opacity 0.2s;
+}
+
+.comp-button:hover {
+  opacity: 0.9;
+}
+
+.comp-container {
+  width: 100%;
+  min-height: 80px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.comp-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.comp-navbar-brand {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.comp-navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  list-style: none;
+}
+
+.comp-navbar-links a {
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.comp-navbar-links a:hover {
+  opacity: 0.8;
+}
+
+.comp-hero {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.comp-hero-heading {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  color: #111827;
+}
+
+.comp-hero-subtext {
+  font-size: 18px;
+  color: #4b5563;
+  margin-bottom: 32px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.comp-hero-cta {
+  display: inline-block;
+  padding: 14px 32px;
+  background: #3b82f6;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.comp-hero-cta:hover {
+  background: #2563eb;
+}
+
+.comp-card {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  background: #fff;
+  max-width: 360px;
+}
+
+.comp-card-image {
+  width: 100%;
+  height: 180px;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  font-size: 13px;
+  overflow: hidden;
+}
+
+.comp-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.comp-card-body {
+  padding: 16px;
+}
+
+.comp-card-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+.comp-card-text {
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.comp-card-cta {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #3b82f6;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+
+.comp-card-cta:hover {
+  background: #2563eb;
+}
+
+.comp-image {
+  display: block;
+}
+
+.comp-image-placeholder {
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  font-size: 14px;
+  min-height: 100px;
+  border-radius: 4px;
+}
+
+.comp-form {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.comp-form-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.comp-form-field {
+  margin-bottom: 12px;
+}
+
+.comp-form-field label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: #374151;
+}
+
+.comp-form-field input,
+.comp-form-field textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+  color: #111827;
+}
+
+.comp-form-field textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.comp-form-submit {
+  padding: 10px 24px;
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.comp-form-submit:hover {
+  background: #2563eb;
+}
+
+.comp-form-children {
+  min-height: 20px;
+  padding: 8px;
+  border: 1px dashed transparent;
+  margin-bottom: 12px;
+  transition: all 0.2s;
+}
+
+.comp-form-children.drop-active {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  border-style: dashed;
+}
+
+.canvas-component.form-container > .comp-form > .comp-form-children {
+  min-height: 40px;
+}
+
+.comp-video {
+  position: relative;
+  overflow: hidden;
+}
+
+.comp-video-placeholder {
+  background: #1f2937;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 14px;
+  min-height: 200px;
+  border-radius: 4px;
+}
+
+.comp-video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+
+.comp-video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}

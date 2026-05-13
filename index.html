@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site Builder</title>
+  <link rel="stylesheet" href="css/builder.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <header id="top-bar">
+    <div class="logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      <span>Site Builder</span>
+    </div>
+    <div class="actions">
+      <button id="btn-preview" class="tb-btn">Preview</button>
+      <div class="responsive-group">
+        <button class="resp-btn active" data-mode="desktop" title="Desktop view">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </button>
+        <button class="resp-btn" data-mode="tablet" title="Tablet view">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="2" width="18" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        </button>
+        <button class="resp-btn" data-mode="mobile" title="Mobile view">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        </button>
+      </div>
+      <button id="btn-export" class="tb-btn tb-btn-primary">Export HTML</button>
+      <button id="btn-clear" class="tb-btn tb-btn-danger">Clear</button>
+    </div>
+  </header>
+
+  <div id="main-layout">
+    <aside id="sidebar">
+      <div class="sidebar-header">Components</div>
+      <div class="component-groups">
+        <div class="component-group">
+          <div class="group-label">Typography</div>
+          <div class="component-item" draggable="true" data-component-type="heading">
+            <span class="comp-icon">H</span>
+            <span class="comp-name">Heading</span>
+          </div>
+          <div class="component-item" draggable="true" data-component-type="paragraph">
+            <span class="comp-icon">&#182;</span>
+            <span class="comp-name">Paragraph</span>
+          </div>
+        </div>
+        <div class="component-group">
+          <div class="group-label">Interactive</div>
+          <div class="component-item" draggable="true" data-component-type="button">
+            <span class="comp-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="10" rx="2"/></svg>
+            </span>
+            <span class="comp-name">Button</span>
+          </div>
+          <div class="component-item" draggable="true" data-component-type="form">
+            <span class="comp-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="10" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
+            </span>
+            <span class="comp-name">Form</span>
+          </div>
+        </div>
+        <div class="component-group">
+          <div class="group-label">Form Elements</div>
+          <div class="component-item" draggable="true" data-component-type="input">
+            <span class="comp-icon">&#35;</span>
+            <span class="comp-name">Input</span>
+          </div>
+          <div class="component-item" draggable="true" data-component-type="textarea">
+            <span class="comp-icon">&#182;&#182;</span>
+            <span class="comp-name">Textarea</span>
+          </div>
+          <div class="component-item" draggable="true" data-component-type="label">
+            <span class="comp-icon">&#955;</span>
+            <span class="comp-name">Label</span>
+          </div>
+          <div class="component-item" draggable="true" data-component-type="select">
+            <span class="comp-icon">&#9660;</span>
+            <span class="comp-name">Select</span>
+          </div>
+        </div>
+        <div class="component-group">
+          <div class="group-label">Sections</div>
+          <div class="component-item" draggable="true" data-component-type="container">
+            <span class="comp-icon">&#9633;</span>
+            <span class="comp-name">Container</span>
+          </div>
+          <div class="component-item" draggable="true" data-component-type="navbar">
+            <span class="comp-icon">&#8801;</span>
+            <span class="comp-name">Navbar</span>
+          </div>
+          <div class="component-item" draggable="true" data-component-type="hero">
+            <span class="comp-icon">&#9733;</span>
+            <span class="comp-name">Hero</span>
+          </div>
+          <div class="component-item" draggable="true" data-component-type="card">
+            <span class="comp-icon">&#9638;</span>
+            <span class="comp-name">Card</span>
+          </div>
+        </div>
+        <div class="component-group">
+          <div class="group-label">Media</div>
+          <div class="component-item" draggable="true" data-component-type="image">
+            <span class="comp-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </span>
+            <span class="comp-name">Image</span>
+          </div>
+          <div class="component-item" draggable="true" data-component-type="video">
+            <span class="comp-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </span>
+            <span class="comp-name">Video</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main id="canvas-wrapper">
+      <div id="responsive-container" class="responsive-desktop">
+        <div id="canvas" class="canvas-edit">
+          <div id="canvas-placeholder">
+            <div class="placeholder-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <p>Drag components here to start building</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <aside id="properties-panel">
+      <div class="panel-header">Properties</div>
+      <div id="props-empty" class="props-empty">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <p>Select a component to edit</p>
+      </div>
+      <div id="props-content" class="props-content" style="display:none">
+        <div id="props-type" class="props-type-label"></div>
+        <div class="props-section">
+          <div class="props-section-title">Content</div>
+          <div id="props-content-fields"></div>
+        </div>
+        <div class="props-section">
+          <div class="props-section-title">Appearance</div>
+          <div id="props-style-fields"></div>
+        </div>
+        <div class="props-section">
+          <button id="btn-delete-component" class="tb-btn tb-btn-danger" style="width:100%">Delete Component</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dragDrop.js"></script>
+  <script src="js/properties.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/responsive.js"></script>
+</body>
+</html>
