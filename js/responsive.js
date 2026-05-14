@@ -28,12 +28,12 @@ var Responsive = {
 
 document.addEventListener('DOMContentLoaded', function() {
   Responsive.init();
-});
 
-document.getElementById('btn-preview').addEventListener('click', function() {
-  App.togglePreview();
-});
+  document.getElementById('btn-preview').addEventListener('click', function() {
+    App.togglePreview();
+  });
 
-document.getElementById('btn-clear').addEventListener('click', function() {
-  App.clearAll();
+  document.getElementById('btn-clear').addEventListener('click', function() {
+    App.clearAll();
+  });
 });

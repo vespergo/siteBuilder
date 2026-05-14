@@ -102,10 +102,22 @@ var App = {
   },
 
   moveComponentToChild: function(parentId, childId) {
+    // Prevent form from being dropped into itself
+    if (parentId === childId) return;
+    
     var parent = this.findComponent(parentId);
     if (!parent || parent.type !== 'form') return;
+    
     var child = this.findComponent(childId);
     if (!child) return;
+    
+    // Restrict which component types can become children of a form
+    var allowedChildTypes = ['heading', 'paragraph', 'button', 'input', 'textarea', 'label', 'select', 'image'];
+    if (allowedChildTypes.indexOf(child.type) === -1) {
+      alert('This component type cannot be placed inside a form.');
+      return;
+    }
+    
     this.components = this.components.filter(function(c) { return c.id !== childId; });
     if (!parent.content.children) parent.content.children = [];
     parent.content.children.push(child);
@@ -140,6 +152,7 @@ var App = {
       var el = createComponentElement(this.components[i]);
       canvas.appendChild(el);
     }
+    this.saveToLocalStorage();
   },
 
   clearAll: function() {
@@ -162,9 +175,27 @@ var App = {
       document.body.classList.remove('preview-mode');
       document.getElementById('btn-preview').textContent = 'Preview';
     }
+  },
+
+  saveToLocalStorage: function() {
+    try {
+      localStorage.setItem('siteBuilderComponents', JSON.stringify(this.components));
+    } catch (e) {}
+  },
+
+  loadFromLocalStorage: function() {
+    try {
+      var saved = localStorage.getItem('siteBuilderComponents');
+      if (saved) {
+        this.components = JSON.parse(saved);
+      }
+    } catch (e) {
+      this.components = [];
+    }
   }
 };
 
 document.addEventListener('DOMContentLoaded', function() {
+  App.loadFromLocalStorage();
   App.render();
 });

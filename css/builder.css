@@ -111,10 +111,32 @@ body {
   border-color: rgba(252,165,165,0.4);
 }
 
+#top-bar .tb-btn-danger {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #fff;
+}
+
+#top-bar .tb-btn-danger:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+}
+
 .tb-btn-danger:hover {
   background: rgba(239,68,68,0.2);
   border-color: #ef4444;
   color: #fff;
+}
+
+#properties-panel .tb-btn-danger {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #fff;
+}
+
+#properties-panel .tb-btn-danger:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
 }
 
 .responsive-group {
@@ -275,26 +297,27 @@ body {
 }
 
 #responsive-container {
-  width: 100%;
   min-height: 100%;
   background: #fff;
   box-shadow: var(--shadow);
   transition: all 0.3s ease;
+  margin: 0 auto;
 }
 
 .responsive-desktop {
   width: 100%;
-  max-width: 100%;
 }
 
 .responsive-tablet {
   width: 768px;
-  max-width: 100%;
+  border-left: 1px solid #d1d5db;
+  border-right: 1px solid #d1d5db;
 }
 
 .responsive-mobile {
   width: 375px;
-  max-width: 100%;
+  border-left: 1px solid #d1d5db;
+  border-right: 1px solid #d1d5db;
 }
 
 #canvas {
@@ -595,9 +618,17 @@ body {
 }
 
 body.preview-mode #sidebar,
-body.preview-mode #properties-panel,
-body.preview-mode #top-bar {
+body.preview-mode #properties-panel {
   display: none;
+}
+
+body.preview-mode #top-bar {
+  opacity: 0.3;
+  transition: opacity 0.2s;
+}
+
+body.preview-mode #top-bar:hover {
+  opacity: 1;
 }
 
 body.preview-mode #canvas-wrapper {
@@ -611,7 +642,8 @@ body.preview-mode .canvas-component {
 }
 
 body.preview-mode .canvas-component:hover {
-  border-color: transparent !important;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.5);
 }
 
 body.preview-mode .canvas-component.selected {
@@ -625,4 +657,33 @@ body.preview-mode .component-delete-btn {
 
 body.preview-mode #canvas-placeholder {
   display: none;
+}
+
+.select-option-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+  align-items: center;
+}
+
+.select-option-row input {
+  padding: 6px 8px;
+  border: 1px solid #334155;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: inherit;
+  color: #e2e8f0;
+  background: #0f172a;
+  width: 100%;
+}
+
+.select-option-row input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+#select-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }

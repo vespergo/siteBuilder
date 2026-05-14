@@ -109,6 +109,11 @@ function buildContentFields(comp) {
       html += '<button type="button" id="add-form-field" style="margin-top:8px;">Add Field</button>';
       break;
 
+    case 'select':
+      html += '<div class="props-field"><label>Options</label><div id="select-options-list"></div></div>';
+      html += '<button type="button" id="add-select-option" style="margin-top:8px;">Add Option</button>';
+      break;
+
     case 'container':
       break;
   }
@@ -120,22 +125,30 @@ function buildStyleFields(comp) {
   var s = comp.styles;
   var html = '';
 
+  var bgIsTransparent = s.backgroundColor === 'transparent';
   html += '<div class="props-field props-field-inline">';
   html += '<div><label>Text Color</label><input type="color" data-style="color" value="' + (s.color || '#111827') + '"></div>';
-  html += '<div><label>Background</label><input type="color" data-style="backgroundColor" value="' + (s.backgroundColor || '#ffffff') + '"></div>';
+  html += '<div><label>Background</label>';
+  html += '<input type="checkbox" id="bg-transparent-check"' + (bgIsTransparent ? ' checked' : '') + '> <label for="bg-transparent-check" style="display:inline;">Transparent</label>';
+  html += '<input type="color" data-style="backgroundColor" id="bg-color-picker" value="' + (bgIsTransparent ? '#ffffff' : (s.backgroundColor || '#ffffff')) + '"' + (bgIsTransparent ? ' style="display:none"' : '') + '>';
+  html += '</div>';
   html += '</div>';
 
-  html += fieldInput('fontSize', 'text', 'Font Size', s.fontSize);
+  html += fieldStyleInput('fontSize', 'Font Size', s.fontSize);
 
   html += '<div class="props-field-inline">';
-  html += fieldInput('padding', 'text', 'Padding', s.padding);
-  html += fieldInput('margin', 'text', 'Margin', s.margin);
+  html += fieldStyleInput('padding', 'Padding', s.padding);
+  html += fieldStyleInput('margin', 'Margin', s.margin);
   html += '</div>';
 
-  html += fieldAlignButtons(s.textAlign || 'left');
+  if (comp.type === 'navbar') {
+    html += fieldJustifyButtons(s.justifyContent || 'space-between');
+  } else {
+    html += fieldAlignButtons(s.textAlign || 'left');
+  }
 
   if (comp.type === 'button' || comp.type === 'card') {
-    html += fieldInput('borderRadius', 'text', 'Border Radius', s.borderRadius || '');
+    html += fieldStyleInput('borderRadius', 'Border Radius', s.borderRadius || '');
   }
 
   return html;
@@ -143,6 +156,10 @@ function buildStyleFields(comp) {
 
 function fieldInput(name, type, label, value) {
   return '<div class="props-field"><label>' + label + '</label><input type="' + type + '" data-field="' + name + '" value="' + escapeAttr(String(value)) + '"></div>';
+}
+
+function fieldStyleInput(name, label, value) {
+  return '<div class="props-field"><label>' + label + '</label><input type="text" data-style="' + name + '" value="' + escapeAttr(String(value)) + '"></div>';
 }
 
 function fieldTextarea(name, label, value) {
@@ -167,11 +184,29 @@ function fieldAlignButtons(current) {
   return html;
 }
 
+function fieldJustifyButtons(current) {
+  var btns = [
+    { val: 'flex-start', label: '\u2190' },
+    { val: 'center', label: '\u2194' },
+    { val: 'flex-end', label: '\u2192' },
+    { val: 'space-between', label: '=' }
+  ];
+  var html = '<div class="props-field"><label>Alignment</label><div class="align-buttons">';
+  for (var i = 0; i < btns.length; i++) {
+    html += '<button class="align-btn' + (current === btns[i].val ? ' active' : '') + '" data-align="' + btns[i].val + '">' + btns[i].label + '</button>';
+  }
+  html += '</div></div>';
+  return html;
+}
+
 function attachFieldListeners() {
   var contentFields = document.getElementById('props-content-fields');
   var styleFields = document.getElementById('props-style-fields');
 
-  if (contentFields._bound) return;
+  if (contentFields._bound) {
+    renderSelectOptions();
+    return;
+  }
   contentFields._bound = true;
 
   contentFields.addEventListener('input', function(e) {
@@ -182,27 +217,40 @@ function attachFieldListeners() {
     var comp = App.getSelected();
     if (!comp) return;
 
+    if (name.indexOf('selectOptionText') === 0) {
+      var idx = parseInt(name.replace('selectOptionText', ''));
+      comp.content.options[idx].text = el.value;
+      App.render();
+      return;
+    }
+    if (name.indexOf('selectOptionValue') === 0) {
+      var idx2 = parseInt(name.replace('selectOptionValue', ''));
+      comp.content.options[idx2].value = el.value;
+      App.render();
+      return;
+    }
+
     if (name.indexOf('linkText') === 0) {
-      var idx = parseInt(name.replace('linkText', ''));
-      comp.content.links[idx].text = el.value;
+      var idx3 = parseInt(name.replace('linkText', ''));
+      comp.content.links[idx3].text = el.value;
       App.render();
       return;
     }
     if (name.indexOf('linkUrl') === 0) {
-      var idx2 = parseInt(name.replace('linkUrl', ''));
-      comp.content.links[idx2].url = el.value;
+      var idx4 = parseInt(name.replace('linkUrl', ''));
+      comp.content.links[idx4].url = el.value;
       App.render();
       return;
     }
     if (name.indexOf('fieldLabel') === 0) {
-      var idx3 = parseInt(name.replace('fieldLabel', ''));
-      comp.content.fields[idx3].label = el.value;
+      var idx5 = parseInt(name.replace('fieldLabel', ''));
+      comp.content.fields[idx5].label = el.value;
       App.render();
       return;
     }
     if (name.indexOf('fieldPlaceholder') === 0) {
-      var idx4 = parseInt(name.replace('fieldPlaceholder', ''));
-      comp.content.fields[idx4].placeholder = el.value;
+      var idx6 = parseInt(name.replace('fieldPlaceholder', ''));
+      comp.content.fields[idx6].placeholder = el.value;
       App.render();
       return;
     }
@@ -214,6 +262,40 @@ function attachFieldListeners() {
       update[name] = el.value;
     }
     App.updateContent(update);
+  });
+
+  contentFields.addEventListener('click', function(e) {
+    var btn = e.target.closest('#add-select-option');
+    if (btn) {
+      var comp = App.getSelected();
+      if (!comp || comp.type !== 'select') return;
+      if (!comp.content.options) comp.content.options = [];
+      comp.content.options.push({ value: '', text: 'New Option' });
+      App.render();
+      renderSelectOptions();
+      return;
+    }
+
+    var delBtn = e.target.closest('.delete-option-btn');
+    if (delBtn) {
+      var idx = parseInt(delBtn.getAttribute('data-option-index'));
+      var comp2 = App.getSelected();
+      if (!comp2 || comp2.type !== 'select') return;
+      comp2.content.options.splice(idx, 1);
+      App.render();
+      renderSelectOptions();
+      return;
+    }
+
+    var btn2 = e.target.closest('#add-form-field');
+    if (btn2) {
+      var comp3 = App.getSelected();
+      if (!comp3) return;
+      if (!comp3.content.fields) comp3.content.fields = [];
+      comp3.content.fields.push({ label: 'New Field', type: 'text', placeholder: '' });
+      App.render();
+      updatePropertiesPanel();
+    }
   });
 
   contentFields.addEventListener('change', function(e) {
@@ -228,6 +310,7 @@ function attachFieldListeners() {
       var idx = parseInt(name.replace('fieldType', ''));
       comp.content.fields[idx].type = el.value;
       App.render();
+      updatePropertiesPanel();
       return;
     }
 
@@ -247,11 +330,37 @@ function attachFieldListeners() {
     App.updateStyles(update);
   });
 
+  styleFields.addEventListener('change', function(e) {
+    var el = e.target;
+    if (el.id === 'bg-transparent-check') {
+      var colorPicker = document.getElementById('bg-color-picker');
+      if (el.checked) {
+        colorPicker.style.display = 'none';
+        App.updateStyles({ backgroundColor: 'transparent' });
+      } else {
+        colorPicker.style.display = '';
+        App.updateStyles({ backgroundColor: colorPicker.value });
+      }
+    }
+    if (el.id === 'bg-color-picker') {
+      var check = document.getElementById('bg-transparent-check');
+      if (check.checked) {
+        check.checked = false;
+        App.updateStyles({ backgroundColor: el.value });
+      }
+    }
+  });
+
   styleFields.addEventListener('click', function(e) {
     var btn = e.target.closest('.align-btn');
     if (!btn) return;
     var align = btn.getAttribute('data-align');
-    App.updateStyles({ textAlign: align });
+    var comp = App.getSelected();
+    if (comp && comp.type === 'navbar') {
+      App.updateStyles({ justifyContent: align });
+    } else {
+      App.updateStyles({ textAlign: align });
+    }
 
     var buttons = styleFields.querySelectorAll('.align-btn');
     for (var i = 0; i < buttons.length; i++) {
@@ -260,21 +369,34 @@ function attachFieldListeners() {
     btn.classList.add('active');
   });
 
-  // Listener for adding new form fields via the Add Field button
-  contentFields.addEventListener('click', function(e) {
-    var btn = e.target.closest('#add-form-field');
-    if (!btn) return;
-    var comp = App.getSelected();
-    if (!comp) return;
-    if (!comp.content.fields) comp.content.fields = [];
-    comp.content.fields.push({ label: 'New Field', type: 'text', placeholder: '' });
-    // Re-render canvas and refresh properties panel to show new field inputs
-    App.render();
-    updatePropertiesPanel();
-  });
+  renderSelectOptions();
 }
 
-document.getElementById('btn-delete-component').addEventListener('click', function() {
+function renderSelectOptions() {
+  var listEl = document.getElementById('select-options-list');
+  if (!listEl) return;
+
   var comp = App.getSelected();
-  if (comp) App.deleteComponent(comp.id);
+  if (!comp || comp.type !== 'select' || !comp.content.options) {
+    listEl.innerHTML = '<p style="color:#64748b;font-size:12px;">No options yet</p>';
+    return;
+  }
+
+  var html = '';
+  for (var i = 0; i < comp.content.options.length; i++) {
+    var opt = comp.content.options[i];
+    html += '<div class="select-option-row">';
+    html += '<input type="text" data-field="selectOptionText' + i + '" value="' + escapeAttr(opt.text) + '" placeholder="Display text" style="flex:1">';
+    html += '<input type="text" data-field="selectOptionValue' + i + '" value="' + escapeAttr(opt.value) + '" placeholder="Value" style="flex:1">';
+    html += '<button type="button" class="delete-option-btn" data-option-index="' + i + '" style="padding:4px 8px;background:#ef4444;color:#fff;border:none;border-radius:4px;cursor:pointer;">&times;</button>';
+    html += '</div>';
+  }
+  listEl.innerHTML = html;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('btn-delete-component').addEventListener('click', function() {
+    var comp = App.getSelected();
+    if (comp) App.deleteComponent(comp.id);
+  });
 });

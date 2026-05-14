@@ -67,14 +67,14 @@ function renderComponentForExport(comp) {
       return '<p style="' + styleStr + '">' + escapeHtml(c.text) + '</p>';
 
     case 'button':
-      return '<a href="' + escapeAttr(c.url) + '" style="' + styleStr + 'display:inline-block;text-decoration:none;font-weight:500;border:none;cursor:pointer;">' + escapeHtml(c.text) + '</a>';
+      return '<a href="' + escapeAttr(c.url) + '" style="display:inline-block;text-decoration:none;border:none;cursor:pointer;' + styleStr + '">' + escapeHtml(c.text) + '</a>';
 
     case 'container':
       return '<div style="' + styleStr + 'min-height:80px;"></div>';
 
     case 'navbar': {
       var linksHTML = (c.links || []).map(function(l) {
-        return '<li><a href="' + escapeAttr(l.url) + '" style="' + styleStr + 'text-decoration:none;">' + escapeHtml(l.text) + '</a></li>';
+        return '<li><a href="' + escapeAttr(l.url) + '" style="color:inherit;text-decoration:none;">' + escapeHtml(l.text) + '</a></li>';
       }).join('');
       return '<nav style="' + styleStr + 'display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">' +
         '<span style="font-weight:700;font-size:18px;">' + escapeHtml(c.brand) + '</span>' +
@@ -106,7 +106,9 @@ function renderComponentForExport(comp) {
       if (c.src) {
         return '<img src="' + escapeAttr(c.src) + '" alt="' + escapeAttr(c.alt) + '" style="' + styleStr + 'max-width:100%;height:auto;display:block;">';
       }
-      return '<div style="' + styleStr + 'width:' + (c.width || 400) + 'px;height:' + (c.height || 300) + 'px;background:#e5e7eb;display:flex;align-items:center;justify-content:center;color:#9ca3af;border-radius:4px;">Image</div>';
+      // Strip backgroundColor from styleStr for placeholder to avoid clashing with #e5e7eb
+      var placeholderStyleStr = styleStr.replace(/background-color:[^;]*;?/gi, '');
+      return '<div style="' + placeholderStyleStr + 'width:' + (c.width || 400) + 'px;height:' + (c.height || 300) + 'px;background:#e5e7eb;display:flex;align-items:center;justify-content:center;color:#9ca3af;border-radius:4px;">Image</div>';
 
     case 'form': {
       var fHTML = (c.fields || []).map(function(f) {
@@ -118,10 +120,11 @@ function renderComponentForExport(comp) {
       var childrenHTML = (c.children || []).map(function(child) {
         return renderChildForExport(child);
       }).join('');
+      var childrenWrapper = childrenHTML ? '<div style="margin-bottom:12px;">' + childrenHTML + '</div>' : '';
       return '<form onsubmit="return false" style="' + styleStr + 'border-radius:8px;">' +
         (c.title ? '<h3 style="font-size:20px;font-weight:600;margin-bottom:16px;">' + escapeHtml(c.title) + '</h3>' : '') +
         fHTML +
-        '<div style="margin-bottom:12px;">' + childrenHTML + '</div>' +
+        childrenWrapper +
         '<button style="padding:10px 24px;background:#3b82f6;color:#fff;border:none;border-radius:4px;font-size:14px;font-weight:500;cursor:pointer;">' + escapeHtml(c.submitText) + '</button>' +
         '</form>';
     }
@@ -143,8 +146,7 @@ function getExportCSS() {
     'body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#111827;}',
     'h1,h2,h3,h4,h5,h6{margin:0;}',
     'p{margin:0;}',
-    'img{max-width:100%;height:auto;display:block;}',
-    'a{color:inherit;}'
+    'img{max-width:100%;height:auto;display:block;}'
   ].join('\n');
 }
 
@@ -164,7 +166,7 @@ function renderChildForExport(comp) {
     case 'paragraph':
       return '<p style="' + styleStr + '">' + escapeHtml(c.text) + '</p>';
     case 'button':
-      return '<a href="' + escapeAttr(c.url) + '" style="' + styleStr + 'display:inline-block;text-decoration:none;font-weight:500;border:none;cursor:pointer;">' + escapeHtml(c.text) + '</a>';
+      return '<a href="' + escapeAttr(c.url) + '" style="display:inline-block;text-decoration:none;border:none;cursor:pointer;' + styleStr + '">' + escapeHtml(c.text) + '</a>';
     case 'input': {
       var labelHTML = c.label ? '<label style="display:block;font-size:14px;font-weight:500;margin-bottom:4px;color:#374151;">' + escapeHtml(c.label) + '</label>' : '';
       return '<div style="margin-bottom:12px;">' + labelHTML + '<input type="' + (c.type || 'text') + '" placeholder="' + escapeAttr(c.placeholder || '') + '" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;font-family:inherit;"></div>';

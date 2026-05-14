@@ -34,30 +34,25 @@ var DragDrop = {
       }
     });
 
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Delete' || e.key === 'Backspace') {
-        var sel = App.getSelected();
-        if (sel && document.activeElement === document.body) {
-          App.deleteComponent(sel.id);
-        }
-      }
-      if (e.key === 'Escape') {
-        App.deselectAll();
-      }
-    });
+document.addEventListener('keydown', function(e) {
+       if (e.key === 'Delete' || e.key === 'Backspace') {
+         // More robust check: only delete if body is focused AND no input-like element is active
+         var tagName = document.activeElement && document.activeElement.tagName;
+         var isEditing = tagName && (tagName === 'INPUT' || tagName === 'TEXTAREA' || tagName === 'SELECT' || tagName === 'OPTION');
+         var sel = App.getSelected();
+         if (sel && document.activeElement === document.body && !isEditing) {
+           App.deleteComponent(sel.id);
+         }
+       }
+       if (e.key === 'Escape') {
+         App.deselectAll();
+       }
+     });
 
     document.addEventListener('dragover', function(e) {
       e.preventDefault();
-    });
-
-    document.addEventListener('drop', function(e) {
-      e.preventDefault();
-    });
-
-    document.addEventListener('dragover', function(e) {
       var dropZone = e.target.closest('.comp-form-children');
       if (dropZone) {
-        e.preventDefault();
         if (self.isSidebarDrag) {
           e.dataTransfer.dropEffect = 'copy';
         } else {
@@ -94,7 +89,8 @@ var DragDrop = {
         self.dragType = null;
       }
     });
-  },
+
+   },
 
   onSidebarDragStart: function(e) {
     this.isSidebarDrag = true;

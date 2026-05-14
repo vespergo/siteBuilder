@@ -30,7 +30,7 @@ function getDefaultContent(type) {
     case 'heading': return { text: 'Heading Text', level: 'h2' };
     case 'paragraph': return { text: 'This is a paragraph. Click to select and edit the text in the properties panel.' };
     case 'button': return { text: 'Click Me', url: '#' };
-    case 'container': return {};
+    case 'container': return { children: [] };
     case 'navbar': return {
       brand: 'Brand',
       links: [
@@ -97,7 +97,7 @@ function getDefaultStyles(type) {
     case 'navbar':
       return Object.assign({}, base, {
         backgroundColor: '#1f2937', color: '#ffffff', padding: '12px 24px',
-        fontSize: '16px', margin: '0', display: 'flex'
+        fontSize: '16px', margin: '0', display: 'flex', justifyContent: 'space-between'
       });
     case 'hero':
       return Object.assign({}, base, {
@@ -132,13 +132,25 @@ function applyStylesToEl(el, styles) {
   for (var prop in styles) {
     if (!styles.hasOwnProperty(prop)) continue;
     var val = styles[prop];
-    if (prop === 'fontSize' && typeof val !== 'string') val = val + 'px';
+    if (prop === 'fontSize') {
+      if (typeof val === 'string' && /^\d+$/.test(val)) {
+        val = val + 'px';
+      } else if (typeof val !== 'string') {
+        val = val + 'px';
+      }
+    }
     try { el.style[prop] = val; } catch(e) {}
   }
 }
 
 function renderChildComponent(comp) {
   var c = comp.content;
+// Complex components cannot be rendered as children
+   var unsupportedTypes = ['form', 'navbar', 'hero', 'card', 'video'];
+  if (unsupportedTypes.indexOf(comp.type) !== -1) {
+    return '<div class="comp-unsupported" style="padding:8px 12px;background:#fee2e2;border:1px solid #ef4444;border-radius:4px;color:#dc2626;font-size:13px;">' +
+      escapeHtml(COMPONENT_META[comp.type].label) + ' cannot be placed inside a form</div>';
+  }
   switch (comp.type) {
     case 'heading':
       return '<' + c.level + ' class="comp-heading">' + escapeHtml(c.text) + '</' + c.level + '>';
@@ -186,7 +198,7 @@ function createComponentHTML(comp) {
       return '<a href="' + escapeAttr(c.url) + '" class="comp-button" onclick="return false">' + escapeHtml(c.text) + '</a>';
 
     case 'container':
-      return '';
+      return '<div class="comp-container-placeholder" style="color:#9ca3af;text-align:center;padding:40px;">Drop content here</div><div class="comp-form-children"></div>';
 
     case 'navbar': {
       var linksHTML = (c.links || []).map(function(l) {
@@ -301,19 +313,58 @@ function createComponentElement(comp) {
     App.selectComponent(comp.id);
   });
 
-  if (comp.type === 'form') {
-    var dropZone = wrapper.querySelector('.comp-form-children');
-    if (dropZone) {
-      dropZone.setAttribute('data-form-id', comp.id);
-    }
-    var children = comp.content.children || [];
-    for (var i = 0; i < children.length; i++) {
-      var childEl = createChildComponentElement(comp.id, children[i]);
+if (comp.type === 'form' || comp.type === 'container') {
+      var dropZone = wrapper.querySelector('.comp-form-children');
       if (dropZone) {
-        dropZone.appendChild(childEl);
+        dropZone.setAttribute('data-form-id', comp.id);
+        
+        // Handle drag and drop for container children
+        dropZone.addEventListener('dragover', function(e) {
+          e.preventDefault();
+          if (DragDrop.isSidebarDrag) {
+            e.dataTransfer.dropEffect = 'copy';
+          } else {
+            e.dataTransfer.dropEffect = 'move';
+          }
+          dropZone.classList.add('drop-active');
+        });
+        
+        dropZone.addEventListener('dragleave', function(e) {
+          var dropZone = e.target.closest('.comp-form-children');
+          if (dropZone && !dropZone.contains(e.relatedTarget)) {
+            dropZone.classList.remove('drop-active');
+          }
+        });
+        
+        dropZone.addEventListener('drop', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.remove('drop-active');
+          
+          var formId = dropZone.getAttribute('data-form-id');
+          if (formId) {
+            if (DragDrop.isSidebarDrag && DragDrop.dragType) {
+              App.addComponentAsChild(formId, DragDrop.dragType);
+            } else if (DragDrop.draggedComponentId) {
+              var childComp = DragDrop.draggedComponentId;
+              App.moveComponentToChild(formId, childComp);
+            }
+          }
+          
+          DragDrop.draggedComponentId = null;
+          DragDrop.isSidebarDrag = false;
+          DragDrop.dragType = null;
+        });
+      }
+      
+      var children = comp.content.children || [];
+      for (var i = 0; i < children.length; i++) {
+        var childEl = createChildComponentElement(comp.id, children[i]);
+        if (dropZone) {
+          dropZone.appendChild(childEl);
+        }
       }
     }
-  }
 
   return wrapper;
 }
