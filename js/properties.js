@@ -106,12 +106,12 @@ function buildContentFields(comp) {
         }
       }
       // Add button to append new field
-      html += '<button type="button" id="add-form-field" style="margin-top:8px;">Add Field</button>';
+      html += '<button type="button" id="add-form-field" class="tb-btn" style="margin-top:8px;width:100%;">Add Field</button>';
       break;
 
     case 'select':
       html += '<div class="props-field"><label>Options</label><div id="select-options-list"></div></div>';
-      html += '<button type="button" id="add-select-option" style="margin-top:8px;">Add Option</button>';
+      html += '<button type="button" id="add-select-option" class="tb-btn" style="margin-top:8px;width:100%;">Add Option</button>';
       break;
 
     case 'container':
@@ -129,7 +129,7 @@ function buildStyleFields(comp) {
   html += '<div class="props-field props-field-inline">';
   html += '<div><label>Text Color</label><input type="color" data-style="color" value="' + (s.color || '#111827') + '"></div>';
   html += '<div><label>Background</label>';
-  html += '<input type="checkbox" id="bg-transparent-check"' + (bgIsTransparent ? ' checked' : '') + '> <label for="bg-transparent-check" style="display:inline;">Transparent</label>';
+  html += '<input type="checkbox" id="bg-transparent-check"' + (bgIsTransparent ? ' checked' : '') + '> <label for="bg-transparent-check" style="display:inline;font-size:13px;">Transparent</label>';
   html += '<input type="color" data-style="backgroundColor" id="bg-color-picker" value="' + (bgIsTransparent ? '#ffffff' : (s.backgroundColor || '#ffffff')) + '"' + (bgIsTransparent ? ' style="display:none"' : '') + '>';
   html += '</div>';
   html += '</div>';
@@ -378,7 +378,7 @@ function renderSelectOptions() {
 
   var comp = App.getSelected();
   if (!comp || comp.type !== 'select' || !comp.content.options) {
-    listEl.innerHTML = '<p style="color:#64748b;font-size:12px;">No options yet</p>';
+    listEl.innerHTML = '<p style="color:#64748b;">No options yet</p>';
     return;
   }
 
@@ -386,9 +386,9 @@ function renderSelectOptions() {
   for (var i = 0; i < comp.content.options.length; i++) {
     var opt = comp.content.options[i];
     html += '<div class="select-option-row">';
-    html += '<input type="text" data-field="selectOptionText' + i + '" value="' + escapeAttr(opt.text) + '" placeholder="Display text" style="flex:1">';
-    html += '<input type="text" data-field="selectOptionValue' + i + '" value="' + escapeAttr(opt.value) + '" placeholder="Value" style="flex:1">';
-    html += '<button type="button" class="delete-option-btn" data-option-index="' + i + '" style="padding:4px 8px;background:#ef4444;color:#fff;border:none;border-radius:4px;cursor:pointer;">&times;</button>';
+    html += '<input type="text" data-field="selectOptionText' + i + '" value="' + escapeAttr(opt.text) + '" placeholder="Display text" style="flex:1;font-size:13px;">';
+    html += '<input type="text" data-field="selectOptionValue' + i + '" value="' + escapeAttr(opt.value) + '" placeholder="Value" style="flex:1;font-size:13px;">';
+    html += '<button type="button" class="delete-option-btn" data-option-index="' + i + '" style="padding:4px 8px;background:#ef4444;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:13px;">&times;</button>';
     html += '</div>';
   }
   listEl.innerHTML = html;

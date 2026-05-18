@@ -69,8 +69,12 @@ function renderComponentForExport(comp) {
     case 'button':
       return '<a href="' + escapeAttr(c.url) + '" style="display:inline-block;text-decoration:none;border:none;cursor:pointer;' + styleStr + '">' + escapeHtml(c.text) + '</a>';
 
-    case 'container':
-      return '<div style="' + styleStr + 'min-height:80px;"></div>';
+    case 'container': {
+      var containerChildrenHTML = (c.children || []).map(function(child) {
+        return renderChildForExport(child);
+      }).join('');
+      return '<div style="' + styleStr + 'min-height:80px;">' + containerChildrenHTML + '</div>';
+    }
 
     case 'navbar': {
       var linksHTML = (c.links || []).map(function(l) {

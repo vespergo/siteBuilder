@@ -81,7 +81,7 @@ var App = {
 
   addComponentAsChild: function(parentId, type) {
     var parent = this.findComponent(parentId);
-    if (!parent || parent.type !== 'form') return;
+    if (!parent || (parent.type !== 'form' && parent.type !== 'container')) return;
     var child = {
       id: this.nextId,
       type: type,
@@ -106,14 +106,20 @@ var App = {
     if (parentId === childId) return;
     
     var parent = this.findComponent(parentId);
-    if (!parent || parent.type !== 'form') return;
+    if (!parent || (parent.type !== 'form' && parent.type !== 'container')) return;
     
     var child = this.findComponent(childId);
     if (!child) return;
     
-    // Restrict which component types can become children of a form
+    // Restrict which component types can become children
     var allowedChildTypes = ['heading', 'paragraph', 'button', 'input', 'textarea', 'label', 'select', 'image'];
-    if (allowedChildTypes.indexOf(child.type) === -1) {
+    if (parent.type === 'container') {
+      // Containers accept all component types except other containers (to avoid deep nesting)
+      if (child.type === 'container') {
+        alert('Cannot nest a container inside another container.');
+        return;
+      }
+    } else if (allowedChildTypes.indexOf(child.type) === -1) {
       alert('This component type cannot be placed inside a form.');
       return;
     }

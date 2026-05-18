@@ -667,10 +667,10 @@ body.preview-mode #canvas-placeholder {
 }
 
 .select-option-row input {
-  padding: 6px 8px;
+  padding: 8px 10px;
   border: 1px solid #334155;
-  border-radius: 4px;
-  font-size: 12px;
+  border-radius: 6px;
+  font-size: 13px;
   font-family: inherit;
   color: #e2e8f0;
   background: #0f172a;
