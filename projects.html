@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Builder - My Projects</title>
+    <link rel="stylesheet" href="css/builder.css"> <!-- Reuse some base styles if possible -->
+    <link rel="stylesheet" href="css/projects.css">
+</head>
+<body class="projects-page">
+    <header id="top-bar">
+        <div class="logo">
+            <div class="logo-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <span>Site Builder</span>
+        </div>
+        <div class="actions">
+            <input type="file" id="import-file" accept=".json" style="display: none;">
+            <button id="btn-import" class="tb-btn">Import JSON</button>
+            <button id="btn-new" class="tb-btn" style="background-color: var(--primary-color); color: white; border-color: var(--primary-color);">Create New Project</button>
+        </div>
+    </header>
+
+    <main class="projects-container">
+        <div class="projects-header">
+            <h2>My Projects</h2>
+            <p>Select a project to continue editing, or import an existing one.</p>
+        </div>
+
+        <div id="projects-grid" class="projects-grid">
+            <!-- Project cards will be injected here by JS -->
+        </div>
+
+        <!-- Empty state placeholder -->
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <div class="empty-icon">📁</div>
+            <h3>No projects found</h3>
+            <p>You haven't created any projects yet. Start by creating a new one!</p>
+            <button id="btn-empty-new" class="btn btn-primary">Create Your First Project</button>
+        </div>
+    </main>
+
+    <script src="js/projects.js"></script>
+</body>
+</html>

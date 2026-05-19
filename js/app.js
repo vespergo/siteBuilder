@@ -169,6 +169,8 @@ var App = {
       self.selectedId = null;
       self.render();
       updatePropertiesPanel();
+      // Ensure localstorage clears out too immediately
+      self.saveToLocalStorage();
     }
   },
 
@@ -185,13 +187,39 @@ var App = {
 
   saveToLocalStorage: function() {
     try {
-      localStorage.setItem('siteBuilderComponents', JSON.stringify(this.components));
+      const urlParams = new URLSearchParams(window.location.search);
+      const projectId = urlParams.get('project');
+      const storageKey = projectId ? 'siteBuilderComponents_' + projectId : 'siteBuilderComponents';
+      localStorage.setItem(storageKey, JSON.stringify(this.components));
+
+      // Also update project count/date in projects list if this is a named project
+      if (projectId) {
+          const projectsJson = localStorage.getItem('siteBuilderProjects');
+          if (projectsJson) {
+              const projects = JSON.parse(projectsJson);
+              const pIdx = projects.findIndex(p => p.id === projectId);
+              if (pIdx !== -1) {
+                  projects[pIdx].lastModified = new Date().toISOString();
+                  projects[pIdx].componentCount = this.components.length;
+                  localStorage.setItem('siteBuilderProjects', JSON.stringify(projects));
+              }
+          }
+      }
     } catch (e) {}
   },
 
   loadFromLocalStorage: function() {
     try {
-      var saved = localStorage.getItem('siteBuilderComponents');
+      const urlParams = new URLSearchParams(window.location.search);
+      const projectId = urlParams.get('project');
+      const storageKey = projectId ? 'siteBuilderComponents_' + projectId : 'siteBuilderComponents';
+      var saved = localStorage.getItem(storageKey);
+      
+      // Fallback to legacy single project if none found
+      if (!saved && projectId) {
+          saved = localStorage.getItem('siteBuilderComponents');
+      }
+
       if (saved) {
         this.components = JSON.parse(saved);
       }

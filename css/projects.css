@@ -1,0 +1,159 @@
+/* css/projects.css - Styles specifically for the project manager page */
+
+body.projects-page {
+    overflow-y: auto;
+    height: auto;
+    display: block;
+    background-color: #f8f9fa;
+}
+
+/* Removed duplicate top-bar styles from projects.css as they use builder.css now */
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-secondary {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+    margin-right: 10px;
+}
+
+.btn-secondary:hover {
+    background-color: #bdc3c7;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+.projects-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.projects-header {
+    margin-bottom: 30px;
+}
+
+.projects-header h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #2c3e50;
+}
+
+.projects-header p {
+    color: #7f8c8d;
+    margin: 0;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+/* Project Card */
+.project-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid #e1e8ed;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.project-preview {
+    height: 160px;
+    background-color: #ecf0f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #e1e8ed;
+    color: #bdc3c7;
+    font-size: 3rem;
+}
+
+.project-info {
+    padding: 16px;
+    flex-grow: 1;
+}
+
+.project-title {
+    margin: 0 0 8px 0;
+    font-size: 1.1rem;
+    color: #2c3e50;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.project-meta {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin: 0 0 16px 0;
+}
+
+.project-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.project-actions .btn {
+    flex: 1;
+    text-align: center;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 8px;
+    border: 1px dashed #bdc3c7;
+    margin-top: 20px;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    color: #bdc3c7;
+}
+
+.empty-state h3 {
+    margin: 0 0 8px 0;
+    color: #2c3e50;
+}
+
+.empty-state p {
+    color: #7f8c8d;
+    margin: 0 0 24px 0;
+}
